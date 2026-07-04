@@ -1,0 +1,11 @@
+env: "local"
+db:
+  host: "${DB_HOST}"
+  port: "${DB_PORT}"
+  user: "${DB_USER}"
+  password: "${DB_PASSWORD}"
+  dbName: "${DB_NAME}"
+http_server:
+  address: "0.0.0.0:8000"
+  timeout: 4s
+  idle_timeout: 60s

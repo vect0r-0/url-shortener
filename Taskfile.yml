@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: "3"
+
+dotenv:
+  - ./.env
+
+tasks:
+  default:
+    cmds:
+      - task: run
+
+  run:
+    cmd: go run ./cmd/server/main.go
