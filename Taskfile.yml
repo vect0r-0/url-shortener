@@ -5,6 +5,9 @@ version: "3"
 dotenv:
   - ./.env
 
+vars:
+  DBURL: postgres://{{.DB_USER}}:{{.DB_PASSWORD}}@{{.DB_HOST}}:{{.DB_PORT}}/{{.DB_NAME}}?sslmode=disable
+
 tasks:
   default:
     cmds:
@@ -12,3 +15,15 @@ tasks:
 
   run:
     cmd: go run ./cmd/server/main.go
+
+  migrate:up:
+    desc: Apply all migrations
+    cmd: goose -dir ./migrations postgres "{{.DBURL}}" up
+
+  migrate:down:
+    desc: Down all migrations
+    cmd: goose -dir ./migrations postgres "{{.DBURL}}" down
+
+  migrate:status:
+    desc: Status migrate
+    cmd: goose -dir ./migrations postgres "{{.DBURL}}" status
