@@ -2,10 +2,12 @@ package main
 
 import (
 	"log/slog"
+	"net/http"
 	"os"
 
 	"github.com/vect0r-0/url-shortener/internal/config"
 	"github.com/vect0r-0/url-shortener/internal/storage/postgres"
+	"github.com/vect0r-0/url-shortener/internal/transport/rest"
 )
 
 const (
@@ -41,6 +43,16 @@ func main() {
 		os.Exit(1)
 	}
 	log.Info("database is up to date")
+
+	h := &http.Server{
+		Handler: rest.New(log),
+		Addr:    cfg.HttpServer.Address,
+	}
+
+	log.Info("starting http server", slog.String("addr", cfg.HttpServer.Address))
+	if err := h.ListenAndServe(); err != nil {
+		log.Error("failed to start http server", "error", err)
+	}
 }
 
 func setupLogger(env string) *slog.Logger {
